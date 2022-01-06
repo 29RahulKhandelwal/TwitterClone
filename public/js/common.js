@@ -116,6 +116,11 @@ $(document).on("click", ".post", (event) => {
         window.location.href = '/posts/' + postId;
     }
 });
+$(document).on("click", ".followButton", (event) => {
+    var button=$(event.target);
+    var userId=button.data().user;
+    console.log(userId);
+});
 function getPostIdFromElement(element){
     var isRoot=element.hasClass("post");
     var rootElement=isRoot ? element : element.closest(".post");
