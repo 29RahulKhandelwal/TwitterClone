@@ -60,6 +60,14 @@ const userSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:'Post'
     }],
+    following:[{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }],
+    followers:[{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }],
 },{timestamps:true});
 const User=mongoose.model("User",userSchema);
 
