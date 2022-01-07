@@ -321,3 +321,6 @@ button span{
     color: var(--blue);
     background-color: var(--blueBg);
 }
+.noResults{
+    padding: var(--spacing);
+}
