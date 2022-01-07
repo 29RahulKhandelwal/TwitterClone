@@ -200,11 +200,26 @@ app.post("/register",async (req,res,next)=>{
 app.get("/api/posts",async (req,res,next)=>{
     var searchObj=req.query;
 
-    if(searchObj.isReply != undefined){
+    if(searchObj.isReply !== undefined){
         var isReply=searchObj.isReply=="true";
         searchObj.replyTo={$exists: isReply}
         delete searchObj.isReply;
     }
+    
+    if(searchObj.followingOnly !== undefined){
+        var followingOnly=searchObj.followingOnly == "true";
+
+        if(followingOnly){
+            // Following User's posts
+            var objectIds=req.session.user.following;
+            // login user posts
+            objectIds.push(req.session.user._id)
+    
+            searchObj.postedBy={$in: objectIds}
+        }
+        delete searchObj.followingOnly;
+    }
+    
 
     var results=await getPosts(searchObj);
     res.send(results);
