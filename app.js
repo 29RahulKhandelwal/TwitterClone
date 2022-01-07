@@ -351,6 +351,12 @@ app.get("/profile/:username/replies",middleware.requireLogin, async (req, res, n
     res.status(200).render("profilePage", payload);
 })
 
+app.put("/api/users/:userId/follow",async (req,res,next)=>{
+    
+    // var results=await getPosts(searchObj);
+    res.send("results");
+})
+
 app.get("/logout",(req,res,next)=>{
     if(req.session){
         req.session.destroy(()=>{
