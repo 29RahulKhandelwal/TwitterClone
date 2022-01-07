@@ -359,18 +359,30 @@ app.put("/api/users/:userId/follow",async (req,res,next)=>{
     
     var isFollowing=user.followers && user.followers.includes(req.session.user._id)
     var option=isFollowing ? "$pull" : "$addToSet"
-
+    
     req.session.user=await User.findByIdAndUpdate( req.session.user._id,{ [option]:{following:userId}},{new:true})
     .catch(error=>{
         console.log(error);
     })
-
+    
     User.findByIdAndUpdate( userId,{ [option]:{followers:req.session.user._id}})
     .catch(error=>{
         console.log(error);
     })
-
+    
     res.status(200).send(req.session.user);
+})
+
+app.get("/profile/:username/following",middleware.requireLogin, async (req, res, next) => {
+    var payload = await getPayload(req.params.username, req.session.user);
+    payload.selectedTab="following";
+    res.status(200).render("followers&following", payload);
+})
+
+app.get("/profile/:username/followers",middleware.requireLogin, async (req, res, next) => {
+    var payload = await getPayload(req.params.username, req.session.user);
+    payload.selectedTab="followers";
+    res.status(200).render("followers&following", payload);
 })
 
 app.get("/logout",(req,res,next)=>{
