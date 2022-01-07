@@ -211,7 +211,13 @@ app.get("/api/posts",async (req,res,next)=>{
 
         if(followingOnly){
             // Following User's posts
-            var objectIds=req.session.user.following;
+            var objectIds=[];
+            if(!req.session.user.following){
+                req.session.user.following=[];
+            }
+            req.session.user.following.forEach(user=>{
+                objectIds.push(user);
+            })
             // login user posts
             objectIds.push(req.session.user._id)
     
