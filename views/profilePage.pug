@@ -7,6 +7,8 @@ block content
         script.
             var profileUserId='!{profileUser._id}';
             var selectedTab='!{selectedTab}';
+        - followersCount=profileUser.followers.length
+        - followingCount=profileUser.following.length
 
         .profileHeaderContainer
             .coverPhotoContainer
@@ -29,10 +31,10 @@ block content
 
                 .followersContainer
                     a(href=`/profile/${profileUser.username}/following`)
-                        span.value #{0}
+                        span.value #{followingCount}
                         span Following
                     a(href=`/profile/${profileUser.username}/followers`)
-                        span.value #{0}
+                        span#followersValue.value #{followersCount}
                         span Followers
         .tabsContainer
             +createTab("Posts", `/profile/${profileUser.username}`, selectedTab != "replies")
