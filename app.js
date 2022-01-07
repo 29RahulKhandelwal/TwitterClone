@@ -354,9 +354,23 @@ app.get("/profile/:username/replies",middleware.requireLogin, async (req, res, n
 app.put("/api/users/:userId/follow",async (req,res,next)=>{
     var userId=req.params.userId;
     var user=await User.findById(userId)
+    
     if(user==null) return res.sendStatus(404)
+    
     var isFollowing=user.followers && user.followers.includes(req.session.user._id)
-    res.status(200).send(isFollowing);
+    var option=isFollowing ? "$pull" : "$addToSet"
+
+    req.session.user=await User.findByIdAndUpdate( req.session.user._id,{ [option]:{following:userId}},{new:true})
+    .catch(error=>{
+        console.log(error);
+    })
+
+    User.findByIdAndUpdate( userId,{ [option]:{followers:req.session.user._id}})
+    .catch(error=>{
+        console.log(error);
+    })
+
+    res.status(200).send(req.session.user);
 })
 
 app.get("/logout",(req,res,next)=>{
