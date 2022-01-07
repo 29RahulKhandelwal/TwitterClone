@@ -385,6 +385,31 @@ app.get("/profile/:username/followers",middleware.requireLogin, async (req, res,
     res.status(200).render("followers&following", payload);
 })
 
+app.get("/api/users/:userId/following",async (req,res,next)=>{
+    User.findById(req.params.userId)
+    .populate("following")
+    .then(results=>{
+        res.status(200).send(results);
+    })
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
+
+app.get("/api/users/:userId/followers",async (req,res,next)=>{
+    User.findById(req.params.userId)
+    .populate("followers")
+    .then(results=>{
+        res.status(200).send(results);
+    })
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
+
+
 app.get("/logout",(req,res,next)=>{
     if(req.session){
         req.session.destroy(()=>{
