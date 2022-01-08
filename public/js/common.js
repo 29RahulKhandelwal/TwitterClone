@@ -66,6 +66,15 @@ $("#deletePostModal").click((event)=>{
         }
     })
 })
+$("#filePhoto").change(function(){
+    if(this.files && this.files[0]){
+        var reader=new FileReader();
+        reader.onload=(event)=>{
+            $("#imagePreview").attr("src",event.target.result)
+        }
+        reader.readAsDataURL(this.files[0])
+    }
+})
 $(document).on("click",".likeButton",(event)=>{
     var button=$(event.target);
     console.log(button)

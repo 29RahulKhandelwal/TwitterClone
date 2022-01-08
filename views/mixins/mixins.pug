@@ -63,6 +63,8 @@ mixin createImageUploadModal()
                     span(aria-hidden='true') &times;
                 .modal-body
                     input#filePhoto(type="file", name="filePhoto")
+                    .imagePreviewContainer 
+                        img#imagePreview
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
                     button#imageUploadButton.btn.btn-primary(type='button') Save
