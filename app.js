@@ -5,6 +5,7 @@ const path=require("path");
 const mongoose=require("mongoose");
 const bcrypt=require("bcrypt");
 const session=require("express-session");
+const fs=require("fs");
 const multer=require("multer");
 const upload=multer({dest:"uploads/"})
 const app=express();
@@ -437,8 +438,19 @@ app.post("/api/users/profilePicture",upload.single("croppedImage"),async (req,re
         console.log("no file uploaded with ajax request");
         return res.sendStatus(400);
     }
-    res.sendStatus(200);
+    var filePath=`/uploads/images/${req.file.filename}.png`;
+    var tempPath=req.file.path;
+    var targetPath=path.join(__dirname,`/${filePath}`);
+    fs.rename(tempPath,targetPath,error=>{
+        if(error!=null){
+            console.log(error);
+            return res.sendStatus(400);
+        }
+        res.sendStatus(200);
+    })
 })
+
+
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
