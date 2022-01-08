@@ -441,16 +441,19 @@ app.post("/api/users/profilePicture",upload.single("croppedImage"),async (req,re
     var filePath=`/uploads/images/${req.file.filename}.png`;
     var tempPath=req.file.path;
     var targetPath=path.join(__dirname,`/${filePath}`);
-    fs.rename(tempPath,targetPath,error=>{
+    fs.rename(tempPath,targetPath,async error=>{
         if(error!=null){
             console.log(error);
             return res.sendStatus(400);
         }
-        res.sendStatus(200);
+        req.session.user=await User.findByIdAndUpdate(req.session.user._id,{profilePic:filePath},{new:true});
+        res.sendStatus(204);
     })
 })
 
-
+app.get("/uploads/images/:path",(req,res,next)=>{
+    res.sendFile(path.join(__dirname,"/uploads/images/"+req.params.path))
+})
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
