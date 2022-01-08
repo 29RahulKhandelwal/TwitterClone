@@ -244,7 +244,7 @@ button span{
 .errorMessage{
     padding: var(--spacing);
 }
-.profileHeaderContainer .coverPhotoContainer{
+.profileHeaderContainer .coverPhotoSection{
     height: 180px;
     background-color: var(--blue);
     position: relative;
@@ -340,14 +340,21 @@ button span{
     flex: 1;
     padding: 0 var(--spacing);
 }
-.profilePictureButton{
+.profilePictureButton,.coverPhotoButton{
     position: absolute;
     font-size: 50px;
     color: rgba(0,0,0,0.6);
     display: none;
 }
-.userImageContainer:hover .profilePictureButton{
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoSection:hover .coverPhotoButton{
     display: block;
+}
+.coverPhotoContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 #imagePreview{
     width: 100%;
