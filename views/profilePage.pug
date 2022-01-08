@@ -15,6 +15,10 @@ block content
 
                 .userImageContainer
                     img(src=profileUser.profilePic, alt="User profile image")
+
+                    if profileUser._id == userLoggedIn._id 
+                        button.profilePictureButton(data-toggle="modal",data-target="")
+                            i.fas.fa-camera
             .profileButtonsContainer
                 if profileUser._id != userLoggedIn._id
                     a.profileButton(href=`/messages/${profileUser._id}`)
