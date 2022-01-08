@@ -85,6 +85,17 @@ $("#filePhoto").change(function(){
         reader.readAsDataURL(this.files[0])
     }
 })
+$("#imageUploadButton").click(()=>{
+    var canvas=cropper.getCroppedCanvas();
+    if(canvas==null){
+        alert("Could not upload image. make sure its an image file!");
+        return;
+    }
+    canvas.toBlob((blob)=>{
+        var formData=new FormData();
+        formData.append("croppedImage",blob)
+    })
+})
 $(document).on("click",".likeButton",(event)=>{
     var button=$(event.target);
     console.log(button)
