@@ -5,6 +5,8 @@ const path=require("path");
 const mongoose=require("mongoose");
 const bcrypt=require("bcrypt");
 const session=require("express-session");
+const multer=require("multer");
+const upload=multer({dest:"uploads/"})
 const app=express();
 
 app.set("view engine","pug");
@@ -430,6 +432,13 @@ app.get("/api/users/:userId/followers",async (req,res,next)=>{
     })
 })
 
+app.post("/api/users/profilePicture",upload.single("croppedImage"),async (req,res,next)=>{
+    if(!req.file){
+        console.log("no file uploaded with ajax request");
+        return res.sendStatus(400);
+    }
+    res.sendStatus(200);
+})
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
