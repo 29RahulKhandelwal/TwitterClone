@@ -1,3 +1,5 @@
+var cropper;
+
 $("#postTextarea,#replyTextarea").keyup((event)=>{
     var textbox=$(event.target);
     var value=textbox.val().trim();
@@ -70,7 +72,15 @@ $("#filePhoto").change(function(){
     if(this.files && this.files[0]){
         var reader=new FileReader();
         reader.onload=(event)=>{
-            $("#imagePreview").attr("src",event.target.result)
+            var image=document.getElementById("imagePreview")
+            image.src=event.target.result;
+            if(cropper!==undefined){
+                cropper.destroy();
+            }
+            cropper=new Cropper(image,{
+                aspectRatio:1/1,
+                background:false
+            })
         }
         reader.readAsDataURL(this.files[0])
     }
