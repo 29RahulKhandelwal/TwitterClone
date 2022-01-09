@@ -122,7 +122,26 @@ $("#coverPhoto").change(function(){
         reader.readAsDataURL(this.files[0])
     }
 })
-// coverPhotoUploadModal
+$("#coverPhotoButton").click(()=>{
+    var canvas=cropper.getCroppedCanvas();
+    if(canvas==null){
+        alert("Could not upload cover image. make sure its an image file!");
+        return;
+    }
+    canvas.toBlob((blob)=>{
+        var formData=new FormData();
+        formData.append("croppedImage",blob)
+
+        $.ajax({
+            url:"/api/users/coverPhoto",
+            type:"POST",
+            data:formData,
+            processData:false,
+            contentType:false,
+            success:()=>location.reload()
+        })
+    })
+})
 $(document).on("click",".likeButton",(event)=>{
     var button=$(event.target);
     console.log(button)

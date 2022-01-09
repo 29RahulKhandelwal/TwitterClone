@@ -55,6 +55,9 @@ const userSchema=new Schema({
         type:String,
         default:"/images/profilePic.png"
     },
+    coverPhoto:{
+        type:String
+    },
     likes:[{
         type:Schema.Types.ObjectId,
         ref:'Post'
@@ -454,6 +457,25 @@ app.post("/api/users/profilePicture",upload.single("croppedImage"),async (req,re
 app.get("/uploads/images/:path",(req,res,next)=>{
     res.sendFile(path.join(__dirname,"/uploads/images/"+req.params.path))
 })
+
+app.post("/api/users/coverPhoto",upload.single("croppedImage"),async (req,res,next)=>{
+    if(!req.file){
+        console.log("no file uploaded with ajax request");
+        return res.sendStatus(400);
+    }
+    var filePath=`/uploads/images/${req.file.filename}.png`;
+    var tempPath=req.file.path;
+    var targetPath=path.join(__dirname,`/${filePath}`);
+    fs.rename(tempPath,targetPath,async error=>{
+        if(error!=null){
+            console.log(error);
+            return res.sendStatus(400);
+        }
+        req.session.user=await User.findByIdAndUpdate(req.session.user._id,{coverPhoto:filePath},{new:true});
+        res.sendStatus(204);
+    })
+})
+
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
