@@ -105,6 +105,24 @@ $("#imageUploadButton").click(()=>{
         })
     })
 })
+$("#coverPhoto").change(function(){
+    if(this.files && this.files[0]){
+        var reader=new FileReader();
+        reader.onload=(event)=>{
+            var image=document.getElementById("coverPreview")
+            image.src=event.target.result;
+            if(cropper!==undefined){
+                cropper.destroy();
+            }
+            cropper=new Cropper(image,{
+                aspectRatio:16/9,
+                background:false
+            })
+        }
+        reader.readAsDataURL(this.files[0])
+    }
+})
+// coverPhotoUploadModal
 $(document).on("click",".likeButton",(event)=>{
     var button=$(event.target);
     console.log(button)
