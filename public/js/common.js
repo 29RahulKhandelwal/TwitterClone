@@ -58,11 +58,27 @@ $("#deletePostModal").on("show.bs.modal", (event) => {
     var postId = getPostIdFromElement(button);
     $("#deletePostButton").data("id", postId);
 })
-$("#deletePostModal").click((event)=>{
+$("#deletePostButton").click((event)=>{
     var postId=$(event.target).data("id")
     $.ajax({    
         url:`/api/posts/${postId}`,
         type:"DELETE",
+        success:()=>{
+            location.reload();
+        }
+    })
+})
+$("#confirmPinModal").on("show.bs.modal", (event) => {
+    var button = $(event.relatedTarget);
+    var postId = getPostIdFromElement(button);
+    $("#pinPostButton").data("id", postId);
+})
+$("#pinPostButton").click((event)=>{
+    var postId=$(event.target).data("id")
+    $.ajax({    
+        url:`/api/posts/${postId}`,
+        data:{pinned:true},
+        type:"PUT",
         success:()=>{
             location.reload();
         }

@@ -357,6 +357,21 @@ app.delete("/api/posts/:id",(req,res,next)=>{
     })
 })
 
+app.put("/api/posts/:id",async(req,res,next)=>{
+    if(req.body.pinned!==undefined){
+        await Post.updateMany({postedBy:req.session.user},{pinned:false})
+        .catch(error=>{
+            console.log(error);
+            res.sendStatus(400);
+        })
+    }
+    Post.findByIdAndUpdate(req.params.id,req.body)
+    .then(()=>res.sendStatus(204))
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
 app.get("/profile/",middleware.requireLogin, (req, res, next) => {
     var payload = {
         pageTitle: req.session.user.username,
