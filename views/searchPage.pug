@@ -1,0 +1,10 @@
+extends layouts/Header.pug
+block content 
+    .tabsContainer
+            +createTab("Posts", `/search/posts`, selectedTab != "users")
+            +createTab("Users", `/search/users`, selectedTab == "users")
+    .resultsContainer
+
+    +createPostModals(userLoggedIn)
+block scripts 
+    script(src="/js/search.js") 

@@ -491,6 +491,16 @@ app.post("/api/users/coverPhoto",upload.single("croppedImage"),async (req,res,ne
     })
 })
 
+app.get("/search",middleware.requireLogin,(req,res,next)=>{
+    var payload=createPayload(req.session.user)
+    res.render("searchPage",payload);
+})
+
+app.get("/search/:selectedTab",middleware.requireLogin,(req,res,next)=>{
+    var payload=createPayload(req.session.user)
+    payload.selectedTab=req.params.selectedTab
+    res.render("searchPage",payload);
+})
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
@@ -530,6 +540,14 @@ async function getPayload(username, userLoggedIn) {
         userLoggedIn: userLoggedIn,
         userLoggedInJs: JSON.stringify(userLoggedIn),
         profileUser: user
+    }
+}
+
+function createPayload(userLoggedIn){
+    return{
+        pageTitle:"Search",
+        userLoggedIn:userLoggedIn,
+        userLoggedInJs:JSON.stringify(userLoggedIn),
     }
 }
 
