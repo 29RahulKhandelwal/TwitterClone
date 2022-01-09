@@ -370,3 +370,7 @@ button span{
 .pinButton.active{
     color: var(--blue);
 }
+.pinnedPostText{
+    font-size: 12px;
+    color: var(--greyText);
+}
