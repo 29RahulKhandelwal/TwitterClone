@@ -9,7 +9,14 @@ $("#searchBox").keydown((event)=>{
         if(value==""){
             $(".resultsContainer").html("");
         }else{
-            console.log(value)
+            search(value,searchType)
         }
     },1000)
 })
+
+function search(searchTerm,searchType){
+    var url=searchType=="users" ? "/api/users" : "/api/posts";
+    $.get(url,{search:searchTerm},(results)=>{
+        console.log(results);
+    })
+}

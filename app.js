@@ -212,6 +212,11 @@ app.get("/api/posts",async (req,res,next)=>{
         delete searchObj.isReply;
     }
     
+    if(searchObj.search!==undefined){
+        searchObj.content={$regex:searchObj.search,$options:"i"};
+        delete searchObj.search;
+    }
+
     if(searchObj.followingOnly !== undefined){
         var followingOnly=searchObj.followingOnly == "true";
 
