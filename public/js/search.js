@@ -18,7 +18,7 @@ function search(searchTerm,searchType){
     var url=searchType=="users" ? "/api/users" : "/api/posts";
     $.get(url,{search:searchTerm},(results)=>{
         if(searchType=="users"){
-
+            console.log(results)
         }else{
             OutputPosts(results,$(".resultsContainer"));
         }

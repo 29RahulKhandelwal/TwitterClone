@@ -398,6 +398,21 @@ app.get("/profile/:username/replies",middleware.requireLogin, async (req, res, n
     res.status(200).render("profilePage", payload);
 })
 
+app.get("/api/users",async (req,res,next)=>{
+    var searchObj=req.query;
+    if(req.query.search!==undefined){
+        searchObj={
+            $or:[
+                {firstname:{$regex:req.query.search,$options:"i"}},
+                {lastname:{$regex:req.query.search,$options:"i"}},
+                {username:{$regex:req.query.search,$options:"i"}},
+            ]
+        }
+    }
+    User.find(searchObj)
+    .then(results=>res.send(results))
+    .catch(error=>console.log(error))
+})
 app.put("/api/users/:userId/follow",async (req,res,next)=>{
     var userId=req.params.userId;
     var user=await User.findById(userId)
