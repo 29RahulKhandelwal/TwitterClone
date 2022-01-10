@@ -1,5 +1,6 @@
 var cropper;
 var timer;
+var selectedUsers=[];
 
 $("#postTextarea,#replyTextarea").keyup((event)=>{
     var textbox=$(event.target);
@@ -498,10 +499,18 @@ function outputSelectableUsers(results,container){
             return;
         }
         var html=createUserhtml(result,true);
-        container.append(html);
+        var element=$(html)
+        container.append(element);
+        element.click(()=>userSelected(result))
     })
     if(results.length===0){
         container.append("<span class='noResults'>No results found</span>")
     }
+}
 
+function userSelected(user){
+    selectedUsers.push(user);
+    $("#userSearchTextBox").val("").focus();
+    $(".resultsContainer").html("");
+    $("#createChatButton").prop("disabled",false);
 }
