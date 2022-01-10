@@ -522,6 +522,24 @@ app.get("/search/:selectedTab",middleware.requireLogin,(req,res,next)=>{
     res.render("searchPage",payload);
 })
 
+app.get("/messages",middleware.requireLogin,(req,res,next)=>{
+    var payload={
+        pageTitle:"Inbox",
+        userLoggedIn:req.session.user,
+        userLoggedInJs:JSON.stringify(req.session.user),
+    }
+    res.render("inboxPage",payload);
+})
+
+app.get("/messages/new",middleware.requireLogin,(req,res,next)=>{
+    var payload={
+        pageTitle:"New Message",
+        userLoggedIn:req.session.user,
+        userLoggedInJs:JSON.stringify(req.session.user),
+    }
+    res.render("newMessage",payload);
+})
+
 app.get("/logout",(req,res,next)=>{
     if(req.session){
         req.session.destroy(()=>{
