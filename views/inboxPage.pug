@@ -1,5 +1,8 @@
 extends layouts/Header.pug
+block headerButton
+    a(href="/messages/new")
+        i.far.fa-plus-square 
 block content 
-    .resultssContainer
+    .resultsContainer
 block scripts 
     script(src="/js/inboxPage.js") 
