@@ -108,7 +108,7 @@ const Post=mongoose.model("Post",postSchema);
 
 app.get("/",middleware.requireLogin,(req,res,next)=>{
     var payload={
-        pageTitle:"Home",
+        pageTitle:"Home - This is not the official Twitter site, Its a clone",
         userLoggedIn:req.session.user,
         userLoggedInJs:JSON.stringify(req.session.user),
     }
