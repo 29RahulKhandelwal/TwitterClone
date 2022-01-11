@@ -20,9 +20,10 @@ function outputChatList(chatList,container){
 
 function createChatHtml(chatData){
     var chatName=getChatName(chatData);
-    var image="";
+    var image=getChatImageElements(chatData);
     var latestMessage="This is the latest message"
     return `<a class='resultListItem' href='/messages/${chatData._id}'>
+                ${image}
                 <div class='resultsDetailsContainer'>
                     <span class="heading">${chatName}</span>
                     <span class="subText">${latestMessage}</span>
@@ -43,4 +44,23 @@ function getChatName(chatData){
 function getOtherChatUsers(users){
     if(users.length==1) return users;
     return users.filter(user=>user._id!=userLoggedIn._id)
+}
+
+function getChatImageElements(chatData){
+    var otherChatUsers=getOtherChatUsers(chatData.users);
+    var groupChatClass="";
+    var chatImage=getUserChatImageElement(otherChatUsers[0])
+
+    if(otherChatUsers.length>1){
+        groupChatClass="groupChatImage"
+        chatImage+=getUserChatImageElement(otherChatUsers[1])
+    }
+    return `<div class='resultImageContainer ${groupChatClass}'>${chatImage}</div>`
+}
+
+function getUserChatImageElement(user){
+    if(!user || !user.profilePic){
+        return alert("User passed into f() is invalid");
+    }
+    return `<img src='${user.profilePic}' alt='user's profile pic'></img>`
 }
