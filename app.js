@@ -548,13 +548,32 @@ app.get("/messages/new",middleware.requireLogin,(req,res,next)=>{
     res.render("newMessage",payload);
 })
 
-app.post("/api/chat",(req,res,next)=>{
-    // var payload={
-    //     pageTitle:"Inbox",
-    //     userLoggedIn:req.session.user,
-    //     userLoggedInJs:JSON.stringify(req.session.user),
-    // }
-    // res.render("inboxPage",payload);
+app.post("/api/chats", async (req, res, next) => {
+    if(!req.body.users) {
+        console.log("Users param not sent with request");
+        return res.sendStatus(400);
+    }
+
+    var users = JSON.parse(req.body.users);
+
+    if(users.length == 0) {
+        console.log("Users array is empty");
+        return res.sendStatus(400);
+    }
+
+    users.push(req.session.user);
+
+    var chatData = {
+        users: users,
+        isGroupChat: true
+    };
+
+    Chat.create(chatData)
+    .then(results => res.status(200).send(results))
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
 })
 
 app.get("/logout",(req,res,next)=>{
