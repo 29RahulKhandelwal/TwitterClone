@@ -106,6 +106,11 @@ const postSchema=new Schema({
 },{timestamps:true})
 const Post=mongoose.model("Post",postSchema);
 
+const chatSchema=new Schema({
+    ,
+},{timestamps:true});
+const Chat=mongoose.model("Chat",chatSchema);
+
 app.get("/",middleware.requireLogin,(req,res,next)=>{
     var payload={
         pageTitle:"Home - This is not the official Twitter site, Its a clone",
