@@ -510,7 +510,20 @@ function outputSelectableUsers(results,container){
 
 function userSelected(user){
     selectedUsers.push(user);
+    updateSelectedUsersHtml();
     $("#userSearchTextBox").val("").focus();
     $(".resultsContainer").html("");
     $("#createChatButton").prop("disabled",false);
+}
+
+function updateSelectedUsersHtml(){
+    var elements=[];
+    selectedUsers.forEach(user=>{
+        var name=user.firstname+" "+user.lastname;
+        var userElement=$(`<span class="selectedUser">${name}</span>`)
+        elements.push(userElement)
+    })
+    $(".selectedUser").remove();
+    $("#selectedUsers").prepend(elements);
+
 }
