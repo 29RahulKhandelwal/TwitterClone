@@ -107,7 +107,10 @@ const postSchema=new Schema({
 const Post=mongoose.model("Post",postSchema);
 
 const chatSchema=new Schema({
-    ,
+    chatName:{type:String, trim:true},
+    isGroupChat:{type:Boolean,default:false},
+    users:[{type:Schema.Types.ObjectId,ref:'User'}],
+    latestMessage:{type:Schema.Types.ObjectId,ref:'Message'}
 },{timestamps:true});
 const Chat=mongoose.model("Chat",chatSchema);
 
@@ -543,6 +546,15 @@ app.get("/messages/new",middleware.requireLogin,(req,res,next)=>{
         userLoggedInJs:JSON.stringify(req.session.user),
     }
     res.render("newMessage",payload);
+})
+
+app.post("/api/chat",(req,res,next)=>{
+    // var payload={
+    //     pageTitle:"Inbox",
+    //     userLoggedIn:req.session.user,
+    //     userLoggedInJs:JSON.stringify(req.session.user),
+    // }
+    // res.render("inboxPage",payload);
 })
 
 app.get("/logout",(req,res,next)=>{

@@ -202,6 +202,13 @@ $("#userSearchTextBox").keydown((event)=>{
         }
     },1000)
 })
+$("#createChatButton").click(()=>{
+    var data=JSON.stringify(selectedUsers);
+    $.post("/api/chat",{users:data},chat=>{
+        if(!chat || !chat._id) return alert("invalid response from server")
+        window.location.href=`/messages/${chat._id}`
+    })
+})
 $(document).on("click",".likeButton",(event)=>{
     var button=$(event.target);
     console.log(button)
