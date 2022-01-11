@@ -487,3 +487,8 @@ button span{
     top: 0;
     right: 0;
 }
+.ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
