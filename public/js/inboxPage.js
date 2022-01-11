@@ -19,7 +19,7 @@ function outputChatList(chatList,container){
 }
 
 function createChatHtml(chatData){
-    var chatName="Chat name";
+    var chatName=getChatName(chatData);
     var image="";
     var latestMessage="This is the latest message"
     return `<a class='resultListItem' href='/messages/${chatData._id}'>
@@ -28,4 +28,19 @@ function createChatHtml(chatData){
                     <span class="subText">${latestMessage}</span>
                 </div>
             </a>`
+}
+
+function getChatName(chatData){
+    var chatName=chatData.chatName;
+    if(!chatName){
+        var otherChatUsers=getOtherChatUsers(chatData.users);
+        var namesArray=otherChatUsers.map(user=>user.firstname+" "+user.lastname)
+        chatName=namesArray.join(", ")
+    }
+    return chatName;
+}
+
+function getOtherChatUsers(users){
+    if(users.length==1) return users;
+    return users.filter(user=>user._id!=userLoggedIn._id)
 }
