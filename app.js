@@ -576,6 +576,13 @@ app.post("/api/chats", async (req, res, next) => {
     })
 })
 
+app.get("/api/chats", async (req, res, next) => {
+    Chat.find({users:{$elemMatch:{$eq:req.session.user._id}}})
+    .then(results=>res.send(results))
+    .catch(error=>console.log(error))
+})
+
+
 app.get("/logout",(req,res,next)=>{
     if(req.session){
         req.session.destroy(()=>{
