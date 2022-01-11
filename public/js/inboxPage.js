@@ -23,7 +23,7 @@ function createChatHtml(chatData){
     var image="";
     var latestMessage="This is the latest message"
     return `<a class='resultListItem' href='/messages/${chatData._id}'>
-                <div class=''resultsDetailsContainer>
+                <div class='resultsDetailsContainer'>
                     <span class="heading">${chatName}</span>
                     <span class="subText">${latestMessage}</span>
                 </div>
