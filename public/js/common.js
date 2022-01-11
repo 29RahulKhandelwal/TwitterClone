@@ -525,5 +525,4 @@ function updateSelectedUsersHtml(){
     })
     $(".selectedUser").remove();
     $("#selectedUsers").prepend(elements);
-
 }
