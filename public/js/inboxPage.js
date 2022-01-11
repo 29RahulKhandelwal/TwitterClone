@@ -55,7 +55,7 @@ function getChatImageElements(chatData){
         groupChatClass="groupChatImage"
         chatImage+=getUserChatImageElement(otherChatUsers[1])
     }
-    return `<div class='resultImageContainer ${groupChatClass}'>${chatImage}</div>`
+    return `<div class='resultsImageContainer ${groupChatClass}'>${chatImage}</div>`
 }
 
 function getUserChatImageElement(user){
