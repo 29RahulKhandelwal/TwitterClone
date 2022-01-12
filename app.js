@@ -583,6 +583,14 @@ app.get("/api/chats", async (req, res, next) => {
     .catch(error=>console.log(error))
 })
 
+app.get("/messages/:chatId",middleware.requireLogin,(req,res,next)=>{
+    var payload={
+        pageTitle:"Chat",
+        userLoggedIn:req.session.user,
+        userLoggedInJs:JSON.stringify(req.session.user),
+    }
+    res.render("chatPage",payload);
+})
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
