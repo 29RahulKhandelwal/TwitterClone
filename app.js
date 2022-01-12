@@ -586,20 +586,36 @@ app.get("/api/chats", async (req, res, next) => {
 app.get("/messages/:chatId",middleware.requireLogin,async (req,res,next)=>{
     var userId=req.session.user._id;
     var chatId=req.params.chatId;
-
-    var chat=await Chat.findOne({_id:chatId,users:{ $elemMatch:{$eq:userId}}})
-    .populate("users");
-
-    if(chat==null){
-        // check if chat id is really user id
-    }
-
+    var isValidId=mongoose.isValidObjectId(chatId);
     var payload={
         pageTitle:"Chat",
         userLoggedIn:req.session.user,
         userLoggedInJs:JSON.stringify(req.session.user),
         chat:chat,
     }
+    
+    if(!isValidId){
+        payload.errorMessage="Chat does not exist or you dont have permission to access it."
+        return res.render("ChatPage",payload);
+    }
+
+    var chat=await Chat.findOne({_id:chatId,users:{ $elemMatch:{$eq:userId}}})
+    .populate("users");
+
+    if(chat==null){
+        // check if chat id is really user id
+        var userFound=await User.findById(chatId);
+        if(userFound==null){
+            // get chat using user id
+        }
+
+    }
+    if(chat==null){
+        payload.errorMessage="Chat does not exist or you dont have permission to access it."
+    }else{
+        payload.chat=chat;
+    }
+
     res.render("chatPage",payload);
 })
 
