@@ -583,11 +583,22 @@ app.get("/api/chats", async (req, res, next) => {
     .catch(error=>console.log(error))
 })
 
-app.get("/messages/:chatId",middleware.requireLogin,(req,res,next)=>{
+app.get("/messages/:chatId",middleware.requireLogin,async (req,res,next)=>{
+    var userId=req.session.user._id;
+    var chatId=req.params.chatId;
+
+    var chat=await Chat.findOne({_id:chatId,users:{ $elemMatch:{$eq:userId}}})
+    .populate("users");
+
+    if(chat==null){
+        // check if chat id is really user id
+    }
+
     var payload={
         pageTitle:"Chat",
         userLoggedIn:req.session.user,
         userLoggedInJs:JSON.stringify(req.session.user),
+        chat:chat,
     }
     res.render("chatPage",payload);
 })
