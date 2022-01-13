@@ -584,39 +584,43 @@ app.get("/api/chats", async (req, res, next) => {
 })
 
 app.get("/messages/:chatId",middleware.requireLogin,async (req,res,next)=>{
-    var userId=req.session.user._id;
-    var chatId=req.params.chatId;
-    var isValidId=mongoose.isValidObjectId(chatId);
-    var payload={
-        pageTitle:"Chat",
-        userLoggedIn:req.session.user,
-        userLoggedInJs:JSON.stringify(req.session.user),
-        chat:chat,
-    }
-    
-    if(!isValidId){
-        payload.errorMessage="Chat does not exist or you dont have permission to access it."
-        return res.render("ChatPage",payload);
+    var userId = req.session.user._id;
+    var chatId = req.params.chatId;
+    var isValidId = mongoose.isValidObjectId(chatId);
+
+
+    var payload = {
+        pageTitle: "Chat",
+        userLoggedIn: req.session.user,
+        userLoggedInJs: JSON.stringify(req.session.user)
+    };
+
+    if(!isValidId) {
+        payload.errorMessage = "Chat does not exist or you do not have permission to view it.";
+        return res.status(200).render("chatPage", payload);
     }
 
-    var chat=await Chat.findOne({_id:chatId,users:{ $elemMatch:{$eq:userId}}})
+    var chat = await Chat.findOne({ _id: chatId, users: { $elemMatch: { $eq: userId } } })
     .populate("users");
 
-    if(chat==null){
-        // check if chat id is really user id
-        var userFound=await User.findById(chatId);
-        if(userFound==null){
+    if(chat == null) {
+        // Check if chat id is really user id
+        var userFound = await User.findById(chatId);
+
+        if(userFound != null) {
             // get chat using user id
+            chat = await getChatByUserId(userFound._id, userId);
         }
-
-    }
-    if(chat==null){
-        payload.errorMessage="Chat does not exist or you dont have permission to access it."
-    }else{
-        payload.chat=chat;
     }
 
-    res.render("chatPage",payload);
+    if(chat == null) {
+        payload.errorMessage = "Chat does not exist or you do not have permission to view it.";
+    }
+    else {
+        payload.chat = chat;
+    }
+
+    res.status(200).render("chatPage", payload);
 })
 
 app.get("/logout",(req,res,next)=>{
@@ -666,6 +670,29 @@ function createPayload(userLoggedIn){
         userLoggedIn:userLoggedIn,
         userLoggedInJs:JSON.stringify(userLoggedIn),
     }
+}
+
+function getChatByUserId(userLoggedInId, otherUserId) {
+    return Chat.findOneAndUpdate({
+        isGroupChat: false,
+        users: {
+            $size: 2,
+            $all: [
+                { $elemMatch: { $eq: userLoggedInId }},
+                { $elemMatch: { $eq: otherUserId }}
+            ]
+        }
+    },
+    {
+        $setOnInsert: {
+            users: [userLoggedInId, otherUserId]
+        }
+    },
+    {
+        new: true,
+        upsert: true
+    })
+    .populate("users");
 }
 
 app.listen(3000,()=>console.log("Server running on port 3000"));
