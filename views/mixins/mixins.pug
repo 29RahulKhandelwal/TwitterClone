@@ -111,3 +111,9 @@ mixin createUnpinPostModal()
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
                     button#unpinPostButton.btn.btn-primary(type='button') Unpin
+mixin createChatImage(chatData,userLoggedIn)
+    if(!chatData)
+        return 
+    .chatImagesContainer 
+        each user in chatData.users
+            img(src=user.profilePic, alt="user's profile picture",title=user.firstname)
