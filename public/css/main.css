@@ -524,7 +524,7 @@ button span{
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 .chatContainer .footer{
     display: flex;
@@ -537,11 +537,18 @@ button span{
     background-color: rgba(0,0,0,0.05);
     border-radius: 18px;
     border: none;
-    padding: 8px;
+    padding: 8px 12px;
     height: 40px;
 }
 .chatContainer .footer button{
     background-color: transparent;
     color: var(--blue);
     font-size: 24px;
+}
+.chatMessages{
+    flex: 1;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    padding: var(--spacing);
 }
