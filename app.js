@@ -584,6 +584,12 @@ app.get("/api/chats", async (req, res, next) => {
     .catch(error=>console.log(error))
 })
 
+app.put("/api/chats/:chatId", async (req, res, next) => {
+    Chat.findByIdAndUpdate(req.params.chatId,req.body)
+    .then(results=>res.send(results))
+    .catch(error=>console.log(error))
+})
+
 app.get("/messages/:chatId",middleware.requireLogin,async (req,res,next)=>{
     var userId = req.session.user._id;
     var chatId = req.params.chatId;

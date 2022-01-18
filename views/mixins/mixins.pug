@@ -138,7 +138,7 @@ mixin createChatNameModal(chat)
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    input#chatNameTextbox(type="text", placeholder="enter a name for this chat",value="chat.chatName")
+                    input#chatNameTextbox(type="text", placeholder="enter a name for this chat",value=chat.chatName)
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
                     button#chatNameButton.btn.btn-primary(type='button') Save
