@@ -23,5 +23,13 @@ $(".inputTextbox").keydown((event)=>{
 })
 
 function messageSubmitted(){
-    console.log('submitted');
+    var content=$(".inputTextbox").val().trim();
+    if(content!=""){
+        sendMessage(content);
+        $(".inputTextbox").val("");
+    }
+}
+
+function sendMessage(content){
+    console.log(content);
 }
