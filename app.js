@@ -114,6 +114,14 @@ const chatSchema=new Schema({
 },{timestamps:true});
 const Chat=mongoose.model("Chat",chatSchema);
 
+const messageSchema=new Schema({
+    sender:{type:Schema.Types.ObjectId,ref:'User'},
+    content:{type:String, trim:true},
+    chat:{type:Schema.Types.ObjectId,ref:'Chat'},
+    readBy:{type:Schema.Types.ObjectId,ref:'User'},
+},{timestamps:true});
+const Message=mongoose.model("Message",messageSchema);
+
 app.get("/",middleware.requireLogin,(req,res,next)=>{
     var payload={
         pageTitle:"Home - This is not the official Twitter site, Its a clone",
