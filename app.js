@@ -648,6 +648,26 @@ app.get("/messages/:chatId",middleware.requireLogin,async (req,res,next)=>{
     res.status(200).render("chatPage", payload);
 })
 
+app.post("/api/messages",middleware.requireLogin,async (req,res,next)=>{
+    if(!req.body.content || !req.body.chatId){
+        console.log("invalid data passed into request");
+        res.sendStatus(400);
+    }
+    var newMessage={
+        sender:req.session.user._id,
+        content:req.body.content,
+        chat:req.body.chatId
+    };
+    Message.create(newMessage)
+    .then(message=>{
+        res.status(201).send(message)
+    })
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
+
 app.get("/logout",(req,res,next)=>{
     if(req.session){
         req.session.destroy(()=>{
