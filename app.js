@@ -584,6 +584,16 @@ app.get("/api/chats", async (req, res, next) => {
     .catch(error=>console.log(error))
 })
 
+app.get("/api/chats/:chatId", async (req, res, next) => {
+    Chat.findOne({_id:req.params.chatId,users:{$elemMatch:{$eq:req.session.user._id}}})
+    .populate("users")
+    .then(results=>res.status(200).send(results))
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400)
+    })
+})
+
 app.put("/api/chats/:chatId", async (req, res, next) => {
     Chat.findByIdAndUpdate(req.params.chatId,req.body)
     .then(results=>res.send(results))
