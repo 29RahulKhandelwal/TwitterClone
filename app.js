@@ -659,7 +659,11 @@ app.post("/api/messages",middleware.requireLogin,async (req,res,next)=>{
         chat:req.body.chatId
     };
     Message.create(newMessage)
-    .then(message=>{
+    .then(async message=>{
+        await message.populate("sender")
+        await message.populate("chat")
+        // message=await message.populate("sender").execPopulate();
+        // message=await message.populate("chat").execPopulate();
         res.status(201).send(message)
     })
     .catch(error=>{
