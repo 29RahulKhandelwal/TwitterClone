@@ -612,6 +612,16 @@ app.put("/api/chats/:chatId", async (req, res, next) => {
     .catch(error=>console.log(error))
 })
 
+app.get("/api/chats/:chatId/messages", async (req, res, next) => {
+    Message.find({chat:req.params.chatId})
+    .populate("sender")
+    .then(results=>res.status(200).send(results))
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400)
+    })
+})
+
 app.get("/messages/:chatId",middleware.requireLogin,async (req,res,next)=>{
     var userId = req.session.user._id;
     var chatId = req.params.chatId;
