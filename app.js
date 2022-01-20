@@ -587,8 +587,12 @@ app.post("/api/chats", async (req, res, next) => {
 app.get("/api/chats", async (req, res, next) => {
     Chat.find({users:{$elemMatch:{$eq:req.session.user._id}}})
     .populate("users")
+    .populate("latestMessage")
     .sort({updatedAt:-1})
-    .then(results=>res.send(results))
+    .then(async results=>{
+        results=await User.populate(results,{path:"latestMessage.sender"})
+        res.send(results)
+    })
     .catch(error=>console.log(error))
 })
 
@@ -664,6 +668,8 @@ app.post("/api/messages",middleware.requireLogin,async (req,res,next)=>{
         await message.populate("chat")
         // message=await message.populate("sender").execPopulate();
         // message=await message.populate("chat").execPopulate();
+        Chat.findByIdAndUpdate(req.body.chatId,{latestMessage:message})
+        .catch(error=>console.log(error))
         res.status(201).send(message)
     })
     .catch(error=>{
