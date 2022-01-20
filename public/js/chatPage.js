@@ -1,9 +1,20 @@
 $(document).ready(()=>{
     $.get(`/api/chats/${chatId}`,(data) => $("#chatName").text(getChatName(data)))
     $.get(`/api/chats/${chatId}/messages`,(data)=>{
-        console.log(data);
+        var messages=[];
+        data.forEach((message)=>{
+            var html=createMessageHtml(message);
+            messages.push(html);
+        })
+        var messagesHtml=messages.join("");
+        addMessagesHtmlToPage(messagesHtml)
     })
 })
+
+function addMessagesHtmlToPage(html){
+    $(".chatMessages").append(html);
+}
+
 $("#chatNameButton").click(()=>{
     var name=$("#chatNameTextbox").val().trim();
     $.ajax({
@@ -50,7 +61,7 @@ function addChatMessageHtml(message){
         return;
     }
     var messageDiv=createMessageHtml(message)
-    $(".chatMessages").append(messageDiv);
+    addMessagesHtmlToPage(messageDiv);
 }
 
 function createMessageHtml(message){
