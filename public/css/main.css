@@ -618,7 +618,7 @@ button span{
 .chatMessages .message.mine.first .messageBody{
     border-bottom-right-radius: 2px;
 }
-.chatMessages .message.mine:not(.first):not(lastt) .messageBody{
+.chatMessages .message.mine:not(.first):not(.last) .messageBody{
     border-bottom-right-radius: 2px;
     border-top-right-radius: 2px;
 }
@@ -627,4 +627,17 @@ button span{
 }
 .chatMessages .message.mine.last:not(.first) .messageBody{
     border-top-right-radius: 2px;
+}
+.chatMessages .message.theirs.first .messageBody{
+    border-bottom-left-radius: 2px;
+}
+.chatMessages .message.theirs:not(.first):not(.last) .messageBody{
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+}
+.chatMessages .message.theirs.last .messageBody{
+    border-bottom-left-radius: 18px;
+}
+.chatMessages .message.theirs.last:not(.first) .messageBody{
+    border-top-left-radius: 2px;
 }
