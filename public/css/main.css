@@ -614,3 +614,17 @@ button span{
     background-color: var(--blue);
     color: #fff;
 }
+
+.chatMessages .message.mine.first .messageBody{
+    border-bottom-right-radius: 2px;
+}
+.chatMessages .message.mine:not(.first):not(lastt) .messageBody{
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.chatMessages .message.mine.last .messageBody{
+    border-bottom-right-radius: 18px;
+}
+.chatMessages .message.mine.last:not(.first) .messageBody{
+    border-top-right-radius: 2px;
+}
