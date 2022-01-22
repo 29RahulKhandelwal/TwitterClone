@@ -96,11 +96,21 @@ function createMessageHtml(message, nextMessage, lastSenderId) {
         }
     }
 
+    var profileImage="";
     if(isLast) {
         liClassName += " last";
+        profileImage=`<img src="${sender.profilePic}"></img>`
+    }
+
+    var imageContainer="";
+    if(!isMine){
+        imageContainer=`<div class="imageContainer">
+            ${profileImage}
+        </div>`
     }
 
     return `<li class='message ${liClassName}'>
+                ${imageContainer}
                 <div class='messageContainer'>
                     ${nameElement}
                     <span class='messageBody'>
