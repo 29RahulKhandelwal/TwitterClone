@@ -677,3 +677,6 @@ button span{
     width: 50%;
     max-width: 75px;
 }
+.postContentContainer .postBody{
+    margin-bottom: var(--spacing);
+}
