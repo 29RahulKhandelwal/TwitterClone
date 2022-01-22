@@ -10,6 +10,10 @@ const multer=require("multer");
 const upload=multer({dest:"uploads/"})
 const app=express();
 
+const server=app.listen(3000,()=>console.log("Server running on port 3000"));
+const io=require("socket.io")(server,{pingTimeout:600000})
+
+
 app.set("view engine","pug");
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
@@ -760,4 +764,6 @@ function getChatByUserId(userLoggedInId, otherUserId) {
     .populate("users");
 }
 
-app.listen(3000,()=>console.log("Server running on port 3000"));
+io.on("connection",(socket)=>{
+    console.log("Connected");
+})
