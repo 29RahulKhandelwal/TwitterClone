@@ -1,4 +1,7 @@
 $(document).ready(() => {
+
+    socket.emit("join room",chatId);
+
     $.get(`/api/chats/${chatId}`, (data) => $("#chatName").text(getChatName(data)))
 
     $.get(`/api/chats/${chatId}/messages`, (data) => {
