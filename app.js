@@ -765,8 +765,11 @@ function getChatByUserId(userLoggedInId, otherUserId) {
     .populate("users");
 }
 
-io.on("connection",(socket)=>{
-    console.log("Finally! Connected");
+io.on("connection",socket=>{
+    socket.on("setup",userData=>{
+        socket.join(userData._id);
+        socket.emit("connected");
+    })
 })
 
 
