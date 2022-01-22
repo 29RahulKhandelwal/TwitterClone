@@ -18,6 +18,9 @@ html,body{
     background-color: #fff;
     font-weight: 300;
 }
+ul{
+    margin: 0;
+}
 *{
     outline: none !important;
 }
