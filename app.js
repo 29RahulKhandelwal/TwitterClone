@@ -8,11 +8,12 @@ const session=require("express-session");
 const fs=require("fs");
 const multer=require("multer");
 const upload=multer({dest:"uploads/"})
+const socketio=require("socket.io");
+const http=require("http");
 const app=express();
 
-const server=app.listen(3000,()=>console.log("Server running on port 3000"));
-const io=require("socket.io")(server,{pingTimeout:600000})
-
+const server=http.createServer(app);
+const io=socketio(server);
 
 app.set("view engine","pug");
 app.use(express.static(path.join(__dirname,"public")));
@@ -765,5 +766,11 @@ function getChatByUserId(userLoggedInId, otherUserId) {
 }
 
 io.on("connection",(socket)=>{
-    console.log("Connected");
+    console.log("Finally! Connected");
 })
+
+
+const port=process.env.PORT || 3000;
+server.listen(port,function(){
+    console.log(`Server started on port ${port}`);
+});
