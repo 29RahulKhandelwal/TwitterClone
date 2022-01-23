@@ -778,6 +778,13 @@ io.on("connection",socket=>{
     socket.on("join room",room=>socket.join(room))
     socket.on("typing",room=>socket.in(room).emit("typing"));
     socket.on("stop typing",room=>socket.in(room).emit("stop typing"));
+
+    socket.on("new message",newMessage=>{
+        var chat=newMessage.chat;
+        if(!chat.users) return console.log("chat.users not defined");
+
+        
+    });
 })
 
 
