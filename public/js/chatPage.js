@@ -1,7 +1,10 @@
+var typing=false;
+var lastTypingTime;
 $(document).ready(() => {
 
     socket.emit("join room",chatId);
     socket.on("typing",()=>$(".typingDots").show());
+    socket.on("Stopped typing",()=>$(".typingDots").hide());
     $.get(`/api/chats/${chatId}`, (data) => $("#chatName").text(getChatName(data)))
 
     $.get(`/api/chats/${chatId}/messages`, (data) => {
@@ -52,7 +55,22 @@ $(".inputTextbox").keydown((event)=>{
 })
 
 function updateTyping(){
-    socket.emit("typing",chatId);
+    if(!connected) return;
+    if(!typing){
+        typing=true;
+        socket.emit("typing",chatId);
+    }
+    lastTypingTime=new Date().getTime();
+    var timeLength=3000;
+
+    setTimeout(()=>{
+        var timeNow=new Date().getTime();
+        var timeDiff=timeNow-lastTypingTime;
+        if(timeDiff >= timeLength && typing){
+            socket.emit("Stopped Typing",chatId)
+            typing=false;
+        }
+    },timeLength);
 }
 
 function messageSubmitted(){
