@@ -477,6 +477,10 @@ app.put("/api/users/:userId/follow",async (req,res,next)=>{
     .catch(error=>{
         console.log(error);
     })
+
+    if(!isFollowing){
+        await Notification.insertNotification(userId,req.session.user._id,"follow",req.session.user._id);
+    }
     
     res.status(200).send(req.session.user);
 })
