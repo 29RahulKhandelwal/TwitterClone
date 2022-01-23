@@ -697,6 +697,16 @@ app.post("/api/messages",middleware.requireLogin,async (req,res,next)=>{
     })
 })
 
+app.get("/notifications",middleware.requireLogin,async (req,res,next)=>{
+    var payload={
+        pageTitle:"Notifications",
+        userLoggedIn:req.session.user,
+        userLoggedInJs:JSON.stringify(req.session.user),
+    }
+    res.render("notificationsPage",payload);
+});
+
+
 app.get("/logout",(req,res,next)=>{
     if(req.session){
         req.session.destroy(()=>{
