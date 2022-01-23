@@ -134,6 +134,17 @@ const notificationSchema=new Schema({
     opened:{type:Boolean,default:false},
     entityId:Schema.Types.ObjectId,
 },{timestamps:true});
+notificationSchema.statics.insertNotifications=async (userTo,userFrom,notificationType,entityId)=>{
+    var data={
+        userTo:userTo,
+        userFrom:userFrom,
+        notificationType:notificationType,
+        entityId:entityId
+    };
+
+    await Notification.deleteOne(data).catch(error=>console.log(error));
+    return Notification.create(data).catch(error=>console.log(error));
+}
 const Notification=mongoose.model("Notification",notificationSchema);
 
 app.get("/",middleware.requireLogin,(req,res,next)=>{
