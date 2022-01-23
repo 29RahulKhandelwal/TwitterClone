@@ -127,6 +127,15 @@ const messageSchema=new Schema({
 },{timestamps:true});
 const Message=mongoose.model("Message",messageSchema);
 
+const notificationSchema=new Schema({
+    userTo:{type:Schema.Types.ObjectId,ref:'User'},
+    userFrom:{type:Schema.Types.ObjectId,ref:'User'},
+    notificationType:{type:String, trim:true},
+    opened:{type:Boolean,default:false},
+    entityId:Schema.Types.ObjectId,
+},{timestamps:true});
+const Notification=mongoose.model("Notification",notificationSchema);
+
 app.get("/",middleware.requireLogin,(req,res,next)=>{
     var payload={
         pageTitle:"Home - This is not the official Twitter site, Its a clone",
