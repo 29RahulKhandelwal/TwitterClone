@@ -724,8 +724,11 @@ app.post("/api/messages",middleware.requireLogin,async (req,res,next)=>{
         await message.populate("sender")
         await message.populate("chat")
         await User.populate(message,{path:"chat.users"});
-        Chat.findByIdAndUpdate(req.body.chatId,{latestMessage:message})
+        var chat=await Chat.findByIdAndUpdate(req.body.chatId,{latestMessage:message})
         .catch(error=>console.log(error))
+
+        insertNotifications(chat,message)
+
         res.status(201).send(message)
     })
     .catch(error=>{
@@ -814,6 +817,13 @@ function getChatByUserId(userLoggedInId, otherUserId) {
         upsert: true
     })
     .populate("users");
+}
+
+function insertNotifications(chat,message){
+    chat.users.forEach(userId=>{
+        if(userId==message.sender._id.toString()) return;
+        Notification.insertNotification(userId,message.sender._id,"newMessage",message.chat._id);
+    })
 }
 
 io.on("connection",socket=>{
