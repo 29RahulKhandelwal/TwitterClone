@@ -14,8 +14,10 @@ block content
                     img(src="/images/loadingSpinner.gif", alt="loadingSpinner")
                 .chatContainer(style="visibility:hidden") 
                     ul.chatMessages
+                    .typingDots 
+                        img(src="/images/dots.gif", alt="typing dots")
                     .footer
-                        textarea.inputTextbox(name="messageInput", placeholder="Type Message...") 
+                        textarea.inputTextbox(name="messageInput", placeholder="Type a message...")
                         button.sendMessageButton
                             i.fas.fa-paper-plane
         +createChatNameModal(chat)
