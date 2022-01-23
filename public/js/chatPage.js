@@ -4,7 +4,7 @@ $(document).ready(() => {
 
     socket.emit("join room",chatId);
     socket.on("typing",()=>$(".typingDots").show());
-    socket.on("Stopped typing",()=>$(".typingDots").hide());
+    socket.on("stop typing",()=>$(".typingDots").hide());
 
     $.get(`/api/chats/${chatId}`, (data) => $("#chatName").text(getChatName(data)))
 
@@ -68,7 +68,7 @@ function updateTyping(){
         var timeNow=new Date().getTime();
         var timeDiff=timeNow-lastTypingTime;
         if(timeDiff >= timeLength && typing){
-            socket.emit("Stopped Typing",chatId)
+            socket.emit("stop typing",chatId)
             typing=false;
         }
     },timeLength);
@@ -79,7 +79,7 @@ function messageSubmitted(){
     if(content!=""){
         sendMessage(content);
         $(".inputTextbox").val("");
-        socket.emit("Stopped Typing",chatId)
+        socket.emit("stop typing",chatId)
         typing=false;
     }
 }

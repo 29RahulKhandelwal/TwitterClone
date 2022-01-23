@@ -777,7 +777,7 @@ io.on("connection",socket=>{
     })
     socket.on("join room",room=>socket.join(room))
     socket.on("typing",room=>socket.in(room).emit("typing"));
-    socket.on("Stopped Typing",room=>socket.in(room).emit("Stopped typing"));
+    socket.on("stop typing",room=>socket.in(room).emit("stop typing"));
 })
 
 
