@@ -5,6 +5,7 @@ $(document).ready(() => {
     socket.emit("join room",chatId);
     socket.on("typing",()=>$(".typingDots").show());
     socket.on("Stopped typing",()=>$(".typingDots").hide());
+
     $.get(`/api/chats/${chatId}`, (data) => $("#chatName").text(getChatName(data)))
 
     $.get(`/api/chats/${chatId}/messages`, (data) => {
@@ -78,6 +79,8 @@ function messageSubmitted(){
     if(content!=""){
         sendMessage(content);
         $(".inputTextbox").val("");
+        socket.emit("Stopped Typing",chatId)
+        typing=false;
     }
 }
 
