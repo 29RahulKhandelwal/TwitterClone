@@ -686,8 +686,7 @@ app.post("/api/messages",middleware.requireLogin,async (req,res,next)=>{
     .then(async message=>{
         await message.populate("sender")
         await message.populate("chat")
-        // message=await message.populate("sender").execPopulate();
-        // message=await message.populate("chat").execPopulate();
+        await User.populate(message,{path:"chat.users"});
         Chat.findByIdAndUpdate(req.body.chatId,{latestMessage:message})
         .catch(error=>console.log(error))
         res.status(201).send(message)
@@ -783,7 +782,10 @@ io.on("connection",socket=>{
         var chat=newMessage.chat;
         if(!chat.users) return console.log("chat.users not defined");
 
-        
+        chat.users.forEach(user=>{
+            if(user._id==newMessage.sender) return;
+            socket.in(user._id).emit("message received",newMessage);
+        })
     });
 })
 
