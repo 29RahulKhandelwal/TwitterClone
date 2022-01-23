@@ -127,14 +127,14 @@ const messageSchema=new Schema({
 },{timestamps:true});
 const Message=mongoose.model("Message",messageSchema);
 
-const notificationSchema=new Schema({
+const NotificationSchema=new Schema({
     userTo:{type:Schema.Types.ObjectId,ref:'User'},
     userFrom:{type:Schema.Types.ObjectId,ref:'User'},
     notificationType:{type:String, trim:true},
     opened:{type:Boolean,default:false},
     entityId:Schema.Types.ObjectId,
 },{timestamps:true});
-notificationSchema.statics.insertNotifications=async (userTo,userFrom,notificationType,entityId)=>{
+NotificationSchema.statics.insertNotification=async (userTo,userFrom,notificationType,entityId)=>{
     var data={
         userTo:userTo,
         userFrom:userFrom,
@@ -145,7 +145,7 @@ notificationSchema.statics.insertNotifications=async (userTo,userFrom,notificati
     await Notification.deleteOne(data).catch(error=>console.log(error));
     return Notification.create(data).catch(error=>console.log(error));
 }
-const Notification=mongoose.model("Notification",notificationSchema);
+const Notification=mongoose.model("Notification",NotificationSchema);
 
 app.get("/",middleware.requireLogin,(req,res,next)=>{
     var payload={
