@@ -746,6 +746,10 @@ app.get("/notifications",middleware.requireLogin,async (req,res,next)=>{
     res.render("notificationsPage",payload);
 });
 
+app.get("/api/notifications",middleware.requireLogin,async (req,res,next)=>{
+    res.send("it worked");
+})
+
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
