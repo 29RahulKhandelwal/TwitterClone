@@ -16,12 +16,32 @@ function outputNotificationList(notifications,container){
 
 function createNotificationHtml(notification){
     var userFrom=notification.userFrom;
+    var text=getNotificationText(notification)
     return `<a href="#" class="resultListItem notification">
                 <div class="resultsImageContainer">
                     <img src="${userFrom.profilePic}"></img>
                 </div>
                 <div class="resultsDetailsContainer ellipsis">
-                    <span class="ellipsis">This is the Text</span>
+                    <span class="ellipsis">${text}</span>
                 </div>
             </a>`
+}
+
+function getNotificationText(notification){
+    var userFrom=notification.userFrom;
+    if(!userFrom.firstname || !userFrom.lastname){
+        return alert("user from data not pupulated");
+    }
+    var userFromName=`${userFrom.firstname} ${userFrom.lastname}`
+    var text;
+    if(notification.notificationType=="retweet"){
+        text=`${userFromName} retweeted one of your post`;
+    }else if(notification.notificationType=="postLike"){
+        text=`${userFromName} liked one of your post`;
+    }else if(notification.notificationType=="reply"){
+        text=`${userFromName} reply to one of your post`;
+    }if(notification.notificationType=="follow"){
+        text=`${userFromName} followed you`;
+    }
+    return `<span class="ellipsis">${text}</span>`
 }
