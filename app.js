@@ -123,7 +123,7 @@ const messageSchema=new Schema({
     sender:{type:Schema.Types.ObjectId,ref:'User'},
     content:{type:String, trim:true},
     chat:{type:Schema.Types.ObjectId,ref:'Chat'},
-    readBy:{type:Schema.Types.ObjectId,ref:'User'},
+    readBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 },{timestamps:true});
 const Message=mongoose.model("Message",messageSchema);
 
@@ -632,13 +632,18 @@ app.post("/api/chats", async (req, res, next) => {
 })
 
 app.get("/api/chats", async (req, res, next) => {
-    Chat.find({users:{$elemMatch:{$eq:req.session.user._id}}})
+    Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } }})
     .populate("users")
     .populate("latestMessage")
-    .sort({updatedAt:-1})
-    .then(async results=>{
-        results=await User.populate(results,{path:"latestMessage.sender"})
-        res.send(results)
+    .sort({ updatedAt: -1 })
+    .then(async results => {
+
+        if(req.query.unreadOnly !== undefined && req.query.unreadOnly == "true") {
+            results = results.filter(r => !r.latestMessage.readBy.includes(req.session.user._id));
+        }
+
+        results = await User.populate(results, { path: "latestMessage.sender" });
+        res.status(200).send(results)
     })
     .catch(error=>console.log(error))
 })

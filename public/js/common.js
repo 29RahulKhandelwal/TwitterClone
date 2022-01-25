@@ -2,6 +2,11 @@ var cropper;
 var timer;
 var selectedUsers=[];
 
+$(document).ready(()=>{
+    refreshMessagesBadge();
+})
+
+
 $("#postTextarea,#replyTextarea").keyup((event)=>{
     var textbox=$(event.target);
     var value=textbox.val().trim();
@@ -584,5 +589,11 @@ function markNotificationAsOpened(notificationId=null,callback=null){
         url:url,
         type:"PUT",
         success:()=>callback()
+    })
+}
+
+function refreshMessagesBadge(){
+    $.get("/api/chats",{unreadOnly: true}, (data)=>{
+        console.log(data.length);
     })
 }
