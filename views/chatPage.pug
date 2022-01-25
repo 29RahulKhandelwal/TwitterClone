@@ -12,7 +12,7 @@ block content
             .mainContentContainer 
                 .loadingSpinnerContainer
                     img(src="/images/loadingSpinner.gif", alt="loadingSpinner")
-                .chatContainer(style="visibility:hidden") 
+                .chatContainer(style="visibility:hidden",data-room=chat._id) 
                     ul.chatMessages
                     .typingDots 
                         img(src="/images/dots.gif", alt="typing dots")
