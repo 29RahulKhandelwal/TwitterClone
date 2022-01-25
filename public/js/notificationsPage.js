@@ -51,8 +51,7 @@ function getNotificationUrl(notification){
     var url="#";
     if(notification.notificationType=="retweet" || notification.notificationType=="postLike" || notification.notificationType=="reply"){
         url=`/posts/${notification.entityId}`;
-    }
-    else if(notification.notificationType=="follow"){
+    }else if(notification.notificationType=="follow"){
         url=`/profile/${notification.entityId}`;
     }
     return url;
