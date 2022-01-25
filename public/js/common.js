@@ -594,6 +594,11 @@ function markNotificationAsOpened(notificationId=null,callback=null){
 
 function refreshMessagesBadge(){
     $.get("/api/chats",{unreadOnly: true}, (data)=>{
-        console.log(data.length);
+        var numResults=data.length;
+        if(numResults>0){
+            $("#messagesBadge").text(numResults).addClass("active");
+        }else{
+            $("#messagesBadge").text("").removeClass("active");
+        }
     })
 }
