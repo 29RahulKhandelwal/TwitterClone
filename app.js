@@ -752,7 +752,13 @@ app.get("/notifications",middleware.requireLogin,async (req,res,next)=>{
 });
 
 app.get("/api/notifications",middleware.requireLogin,async (req,res,next)=>{
-    Notification.find({userTo:req.session.user._id,notificationType:{$ne:"newMessage"}})
+    var searchObj={userTo:req.session.user._id,notificationType:{$ne:"newMessage"}};
+
+    if(req.query.unreadOnly !== undefined && req.query.unreadOnly == "true") {
+        searchObj.opened=false;
+    }
+
+    Notification.find(searchObj)
     .populate("userTo")
     .populate("userFrom")
     .sort({createdAt:-1})
