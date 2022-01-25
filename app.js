@@ -758,6 +758,15 @@ app.get("/api/notifications",middleware.requireLogin,async (req,res,next)=>{
     });
 });
 
+app.put("/api/notifications/:id/markAsOpened",middleware.requireLogin,async (req,res,next)=>{
+    Notification.findByIdAndUpdate(req.params.id,{opened:true})
+    .then(()=>res.sendStatus(204))
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400);
+    });
+});
+
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
