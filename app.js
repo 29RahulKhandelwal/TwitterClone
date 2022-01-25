@@ -799,6 +799,14 @@ app.put("/api/notifications/markAsOpened",middleware.requireLogin,async (req,res
     });
 });
 
+app.put("/api/chats/:chatId/messages/markAsRead",middleware.requireLogin,async (req,res,next)=>{
+    Message.updateMany({chat:req.params.chatId},{$addToSet:{readBy:req.session.user._id}})
+    .then(()=>res.sendStatus(204))
+    .catch(error=>{
+        console.log(error);
+        res.sendStatus(400)
+    })
+})
 
 app.get("/logout",(req,res,next)=>{
     if(req.session){
