@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express=require("express");
 const pug=require("pug");
 const middleware=require("./middleware");
@@ -19,7 +20,7 @@ app.set("view engine","pug");
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
 app.use(session({
-    secret:"THeSecret.",
+    secret:"process.env.Secret",
     resave:true,
     saveUninitialized:false
 }));
