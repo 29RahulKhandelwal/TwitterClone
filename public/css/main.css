@@ -693,3 +693,6 @@ button span{
 .postContentContainer .postBody{
     margin-bottom: var(--spacing);
 }
+.resultListItem.active{
+    background-color: var(--blueBg);
+}
